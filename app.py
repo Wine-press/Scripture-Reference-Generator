@@ -2,12 +2,36 @@ import streamlit as st
 from google import genai
 import os
 
-# Web App UI Configuration
-st.title("Sermon Scripture to Lower-Third SRT Generator")
-st.write("Upload a complete MP3/WAV sermon audio file to automatically generate scripture lower-third subtitles.")
+# Page Configuration
+st.set_page_config(page_title="Scripture Reference Generator", page_icon="📖", layout="centered")
 
-# Securely request API key from your team member (or hardcode it if private)
-api_key = st.text_input("Enter the Gemini API Key:", type="password")
+# Custom Styling (CSS Injection)
+st.markdown("""
+    <style>
+    /* Custom button styling */
+    .stButton>button {
+        width: 100%;
+        background-color: #2E7D32;
+        color: white;
+        font-weight: bold;
+        border-radius: 8px;
+        height: 3em;
+    }
+    .stDownloadButton>button {
+        width: 100%;
+        background-color: #1976D2;
+        color: white;
+        font-weight: bold;
+        border-radius: 8px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+st.title("📖 Scripture Reference Lower-Third Generator")
+st.caption("Upload a sermon audio file to automatically extract timecoded scripture lower-thirds.")
+
+# Automatically fetch API key from Streamlit Secrets if configured, otherwise prompt
+api_key = st.secrets.get("GEMINI_API_KEY") if "GEMINI_API_KEY" in st.secrets else st.text_input("Enter Gemini API Key:", type="password")
 uploaded_file = st.file_uploader("Upload Audio Sermon (MP3/WAV)", type=["mp3", "wav", "m4a"])
 
 if st.button("Generate SRT") and uploaded_file and api_key:
