@@ -53,7 +53,7 @@ if st.button("Generate SRT") and uploaded_file and api_key:
         
         # Call Gemini 1.5 Pro to process audio + prompt
         response = client.models.generate_content(
-            model='gemini-1.5-pro-latest',
+            model='gemini-2.5-flash',
             contents=[gemini_file, prompt]
         )
         
